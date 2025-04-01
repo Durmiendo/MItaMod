@@ -43,7 +43,6 @@ public class MitaMod extends Mod {
         Pal.reactorPurple2 = Color.valueOf("8431B4");
 
 
-
         Events.on(EventType.ClientLoadEvent.class, e -> {
             Vars.renderer.planets.cam.far = 1000;
             final Vec3 lightDir = new Vec3(0, -1, 0).nor();
