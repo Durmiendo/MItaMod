@@ -71,7 +71,7 @@ void main() {
     v_pos = vec3(u_trans * rotated_position);
     vec3 lightDir = normalize(u_lightpos - v_pos);
     float diffuse = max(dot(rotated_normal, lightDir), 0.0);
-    float ambient = 0;
+    float ambient = 0.;
     float ins = ambient + diffuse;
     v_col = vec3(ins);
 
