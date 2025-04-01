@@ -16,7 +16,6 @@ import mindustry.graphics.Pal;
 import mindustry.graphics.g3d.MultiMesh;
 import mindustry.graphics.g3d.PlanetParams;
 import mindustry.mod.Mod;
-import mindustry.type.Planet;
 import mindustry.ui.dialogs.BaseDialog;
 
 
@@ -24,10 +23,7 @@ public class MitaMod extends Mod {
     public MitaMod() {}
 
     public static InternalFileTree internalFileTree = new InternalFileTree(MitaMod.class);
-
     public static S3Renderer renderer;
-
-    public static Planet p;
 
 
     @Override
@@ -45,7 +41,6 @@ public class MitaMod extends Mod {
 
         Events.on(EventType.ClientLoadEvent.class, e -> {
             Vars.renderer.planets.cam.far = 1000;
-            final Vec3 lightDir = new Vec3(0, -1, 0).nor();
             final Vec3 rs = new Vec3(0,0, 0f);
             final Vec3 scl = new Vec3(2f, 2f, 2f).scl(90f);
             final Vec3 ps = new Vec3(0, -1.0f, -0.22f).scl(scl).scl(1/4f);
@@ -53,30 +48,6 @@ public class MitaMod extends Mod {
                     Planets.sun.mesh,
                     (planetParams, mat3D, mat3D1) -> MitaMod.renderer.mitaMenu.render(ps, rs, mat3D, mat3D1, Vars.renderer.planets.cam, planetParams.planet.position, true, scl)
             );
-
-//            p = new Planet("hiddenSun", Planets.sun, 1f, 2){{
-//                position = Planets.sun.position;
-//                generator = new TantrosPlanetGenerator();
-//                meshLoader = () -> new HexMesh(this, 4);
-//                accessible = false;
-//                visible = true;
-//                atmosphereColor = Color.valueOf("3db899");
-//                iconColor = Color.valueOf("597be3");
-//                startSector = 10;
-//                atmosphereRadIn = -0.01f;
-//                atmosphereRadOut = 0.3f;
-//                defaultEnv = Env.underwater | Env.terrestrial;
-//                ruleSetter = r -> {};
-//            }
-//
-//
-//                public void draw(PlanetParams params, Mat3D projection, Mat3D transform) {
-//                    if (mesh == null) {
-//
-//                    }
-//                    super.draw(params, projection, transform);
-//                }
-//            };
 
             renderer = new S3Renderer();
 
