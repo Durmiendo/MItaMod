@@ -1,0 +1,23 @@
+{
+    "projectSettings": {
+        "version": "v1.0",
+        "group": "Durmiendo/MitaMod"
+    },
+
+    "dependencies": {
+        "useJitpackForMindustryDependency": false,
+        "mindustryVersion": "v146",
+
+        "list": [],
+
+        "deps": {
+            "compileOnly": [],
+            "annotationProcessor": []
+        }
+    },
+
+    "extensions":[
+        "mindustry-mod",
+        "durmiendo-builder-tasks"
+    ]
+}

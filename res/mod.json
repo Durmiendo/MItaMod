@@ -1,0 +1,14 @@
+{
+  "main": "org.durmiendo.mitamod.MitaMod",
+  "name": "mitamod",
+  "displayName": "MitaMod",
+  "author": "Durmiendo",
+  "repo": "Durmiendo/MitaMod",
+  "subtitle": " - ",
+  "description": " ",
+  "version": "1.0",
+  "minGameVersion": "146",
+  "java": true,
+  "hidden": true,
+  "hideBrowser": false
+}

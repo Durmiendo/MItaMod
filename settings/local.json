@@ -1,0 +1,16 @@
+{
+  "copy": [
+    "/home/durmiendo/.local/share/Mindustry/mods"
+  ],
+  "build": {
+    "buildAndroid": false
+  },
+  "dbt": {
+    "run": [
+      "java -jar /home/durmiendo/mindustry/Mindustry.jar"
+    ],
+    "frun": [
+      "nautilus /home/durmiendo/.local/share/Mindustry"
+    ]
+  }
+}
