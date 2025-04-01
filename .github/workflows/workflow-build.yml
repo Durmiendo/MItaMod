@@ -23,7 +23,7 @@ jobs:
           echo "::set-output name=version::$VERSION"
       - name: Rename jar
         run: |
-          mv artifacts/Sueno.jar artifacts/Sueno-${{ steps.get-version.outputs.version }}.${{ github.run_number }}.jar
+          mv artifacts/MitaMod.jar artifacts/MitaMOd-${{ steps.get-version.outputs.version }}.${{ github.run_number }}.jar
       - name: Upload built jar file
         uses: actions/upload-artifact@v4
         with:
