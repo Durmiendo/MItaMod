@@ -21,9 +21,6 @@ jobs:
         run: |
           VERSION=$(cat mod.json | jq -r '.version')
           echo "::set-output name=version::$VERSION"
-      - name: Rename jar
-        run: |
-          mv artifacts/MitaMod.jar artifacts/MitaMod.jar
       - name: Upload built jar file
         uses: actions/upload-artifact@v4
         with:
