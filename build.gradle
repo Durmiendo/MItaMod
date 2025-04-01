@@ -33,7 +33,7 @@ ext {
     }
 
     getOutputJar = { Project p ->
-        return "Sueno.jar"
+        return "MitaMod.jar"
     }
 
     child = { File p, String c ->

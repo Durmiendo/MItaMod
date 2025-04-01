@@ -15,7 +15,7 @@ jobs:
       - name: Build mod jars
         run: |
           chmod +x gradlew
-          ./gradlew copyBuildRelease --stacktrace
+          ./gradlew buildRelease --stacktrace
       - name: Get mod version
         id: get-version
         run: |
