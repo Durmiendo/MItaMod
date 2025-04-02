@@ -1,4 +1,4 @@
-package org.durmiendo.mitamod;
+package org.durmiendo.mitamod.render;
 
 import arc.Core;
 import arc.Events;
@@ -21,6 +21,9 @@ import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
+import org.durmiendo.mitamod.MitaMod;
+import org.durmiendo.mitamod.render.loaders.Obj;
+import org.durmiendo.mitamod.render.loaders.ObjParser;
 
 
 public class S3Renderer implements Disposable {
@@ -50,11 +53,6 @@ public class S3Renderer implements Disposable {
     public static Shader shader = new Shader(
             MitaMod.internalFileTree.child("shaders/3d.vert"),
             MitaMod.internalFileTree.child("shaders/3d.frag")
-    );
-
-    public static Shader shader2 = new Shader(
-            MitaMod.internalFileTree.child("shaders/3d2.vert"),
-            MitaMod.internalFileTree.child("shaders/3d2.frag")
     );
 
     public TextureRegion r = new TextureRegion();
@@ -124,7 +122,6 @@ public class S3Renderer implements Disposable {
     public Vec3 tmp = new Vec3(0f, 0f, 0f);
     public Vec3 tmp2 = new Vec3(0f, 0f, 0f);
     public Vec3 tmp4 = new Vec3(0f, 0f, 0f);
-    public Vec3 lights = new Vec3(0f, 0, 1f);
 
     public Mat3D mtmp2 = new Mat3D();
 
@@ -144,7 +141,6 @@ public class S3Renderer implements Disposable {
 
         cam.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
         cam.position.set(0, 0, 0);
-//        cam.lookAt(0, 0f, -1);
         cam.direction.set(0, 0,-1f);
         cam.update();
 
@@ -152,7 +148,7 @@ public class S3Renderer implements Disposable {
 
 
         buffer.begin(Color.clear);
-        shader2.bind();
+        shader.bind();
 
         if (t) baseRender();
         else mitaRender();
@@ -162,8 +158,6 @@ public class S3Renderer implements Disposable {
         Gl.disable(Gl.cullFace);
         Gl.disable(Gl.depthTest);
         Gl.depthMask(false);
-
-        Draw.blit(buffer, shader2);
     }
 
     private void mitaRender() {
@@ -187,7 +181,7 @@ public class S3Renderer implements Disposable {
             tmp.y *= ((2.3645161f*1.9f)/Core.graphics.getHeight());
             tmp.z = -2.3645161f*2f/Vars.renderer.getDisplayScale();
 
-            b.value.render(tmp, tmp2, cam.combined, mtmp2, cam, lights, false, scale);
+            b.value.render(tmp, tmp2, cam.combined, mtmp2, cam, scale);
         }
     }
 
@@ -215,14 +209,12 @@ public class S3Renderer implements Disposable {
             tmp.y *= ((2.3645161f*1.9f)/Core.graphics.getHeight());
             tmp.z = -2.3645161f*2f/Vars.renderer.getDisplayScale();
 
-            b.value.render(tmp, tmp2, cam.combined, mtmp2, cam, lights, false, scale);
+            b.value.render(tmp, tmp2, cam.combined, mtmp2, cam, scale);
         }
     }
 
     public void dispose() {
-        if (shader != null) {
-            shader.dispose();
-        }
+        if (shader != null) shader.dispose();
     }
 }
 

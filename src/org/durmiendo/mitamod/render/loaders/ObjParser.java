@@ -1,4 +1,4 @@
-package org.durmiendo.mitamod;
+package org.durmiendo.mitamod.render.loaders;
 
 import arc.graphics.Color;
 import arc.graphics.Mesh;
@@ -10,11 +10,13 @@ import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.struct.ShortSeq;
 import arc.util.Log;
+import org.durmiendo.mitamod.MitaMod;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
 
 public class ObjParser {
+    public static Seq<Obj> keys = new Seq<>();
     public static ObjectMap<String, Obj> loaded = new ObjectMap<>();
     public static float[] vertices;
     public static short[] indices;
@@ -110,6 +112,9 @@ public class ObjParser {
         FloatSeq vertexList = new FloatSeq(); // Содержит уникальные данные вершин в формате x, y, z, nx, ny, nz, u, v
         ShortSeq indexList = new ShortSeq(); // Содержит индексы вершин для отрисовки
 
+        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE, minZ = Float.MAX_VALUE;
+        float maxX = Float.MIN_VALUE, maxY = Float.MIN_VALUE, maxZ = Float.MIN_VALUE;
+
 
         try (BufferedReader reader = new BufferedReader(new StringReader(obj))) {
             String line;
@@ -119,9 +124,21 @@ public class ObjParser {
                 String[] parts = line.split("\\s+");
                 switch (parts[0]) {
                     case "v":
-                        positions.add(Float.parseFloat(parts[1]));
-                        positions.add(Float.parseFloat(parts[2]));
-                        positions.add(Float.parseFloat(parts[3]));
+                        float x = Float.parseFloat(parts[1]);
+                        float y = Float.parseFloat(parts[2]);
+                        float z = Float.parseFloat(parts[3]);
+
+                        positions.add(x);
+                        positions.add(y);
+                        positions.add(z);
+
+                        minX = Math.min(minX, x);
+                        minY = Math.min(minY, y);
+                        minZ = Math.min(minZ, z);
+
+                        maxX = Math.max(maxX, x);
+                        maxY = Math.max(maxY, y);
+                        maxZ = Math.max(maxZ, z);
                         break;
                     case "vn":
                         tmp.x = Float.parseFloat(parts[1]);
@@ -180,7 +197,9 @@ public class ObjParser {
                 }
             }
             runnable.run();
-//            result.materials.remove(result.materials.size-1);
+
+            result.size.set(maxX - minX, maxY - minY, maxZ - minZ);
+            keys.add(result);
             return result;
         } catch (Exception e) {
             Log.err(e);

@@ -3,7 +3,7 @@
     "/home/durmiendo/.local/share/Mindustry/mods"
   ],
   "build": {
-    "buildAndroid": true
+    "buildAndroid": false
   },
   "dbt": {
     "run": [

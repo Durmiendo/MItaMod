@@ -17,6 +17,8 @@ import mindustry.graphics.g3d.MultiMesh;
 import mindustry.graphics.g3d.PlanetParams;
 import mindustry.mod.Mod;
 import mindustry.ui.dialogs.BaseDialog;
+import org.durmiendo.mitamod.render.S3Renderer;
+import org.durmiendo.mitamod.render.loaders.Obj;
 
 
 public class MitaMod extends Mod {
@@ -46,7 +48,7 @@ public class MitaMod extends Mod {
             final Vec3 ps = new Vec3(0, -1.0f, -0.22f).scl(scl).scl(1/4f);
             Planets.sun.mesh = new MultiMesh(
                     Planets.sun.mesh,
-                    (planetParams, mat3D, mat3D1) -> MitaMod.renderer.mitaMenu.render(ps, rs, mat3D, mat3D1, Vars.renderer.planets.cam, planetParams.planet.position, true, scl)
+                    (planetParams, mat3D, mat3D1) -> MitaMod.renderer.mitaMenu.render(ps, rs, mat3D, mat3D1, Vars.renderer.planets.cam, scl)
             );
 
             renderer = new S3Renderer();

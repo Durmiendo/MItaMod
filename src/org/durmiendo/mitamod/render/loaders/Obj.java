@@ -1,4 +1,4 @@
-package org.durmiendo.mitamod;
+package org.durmiendo.mitamod.render.loaders;
 
 import arc.graphics.Color;
 import arc.graphics.Gl;
@@ -9,24 +9,28 @@ import arc.graphics.gl.Shader;
 import arc.math.geom.Mat3D;
 import arc.math.geom.Vec3;
 import arc.struct.Seq;
+import arc.util.Disposable;
+import org.durmiendo.mitamod.render.S3Renderer;
+import org.durmiendo.mitamod.render.light.Light;
+import org.durmiendo.mitamod.render.light.Lights;
 
-public class Obj {
-    public static Obj zero = new Obj(){
-        public void render(Vec3 pos, Vec3 rot, Mat3D projection, Mat3D transform, Camera3D cam, Vec3 light, Vec3 scale) {}
-    };
+public class Obj implements Disposable {
+    public static Obj zero = new Obj(){};
+    public Vec3 size;
 
     public Seq<Material> materials = new Seq<>();
-    public Shader shader1 = S3Renderer.shader;
-    public Shader shader2 = S3Renderer.shader2;
+    public static Shader baseShader = S3Renderer.shader;
     public float scl = 1;
 
-    public void render(Vec3 pos, Vec3 rot, Mat3D projection, Mat3D transform, Camera3D cam, Vec3 light, boolean lt, Vec3 scale) {
+    private static Mat3D tmp = new Mat3D();
+
+    public void render(Vec3 pos, Vec3 rot, Mat3D projection, Mat3D transform, Camera3D cam, Vec3 scale) {
         for (int i = 0; i < materials.size; i++) {
             Material m = materials.get(i);
             if (m.mtl == null) m.mtl = Mtl.zerom;
             if (!m.renderer) continue;
 
-            Shader shader = lt ? shader2 : shader1;
+            Shader shader = baseShader;
             shader.bind();
 
             Texture tex = m.mtl.texture;
@@ -38,8 +42,15 @@ public class Obj {
             shader.setUniformf("u_rot", rot);
             shader.setUniformf("u_campos", cam.position);
             shader.setUniformf("u_camdir", cam.direction);
-            shader.setUniformf(lt ? "u_lightpos" : "u_lightdir", light);
             shader.setUniformf("u_scale", scale.x * scl, scale.y * scl, scale.z * scl);
+
+            Light[] lights = Lights.get(pos, size);
+            for (int j = 0; j < lights.length; j++) {
+                Light light = lights[j];
+                light.applyToShader(shader, "u_lights", j);
+            }
+
+            shader.setUniformi("u_numLights", Lights.all.size);
 
             m.mesh.bind(shader);
             m.mesh.render(shader, Gl.triangles);
@@ -57,11 +68,16 @@ public class Obj {
         shader.setUniformi("u_illum", i.mtl.illum);
     }
 
-    public static class Material {
+    public static class Material implements Disposable {
         public String on;
         public Mtl mtl = Mtl.zerom;
         public boolean renderer = true;
         public Mesh mesh;
+
+        @Override
+        public void dispose() {
+            if (mesh != null) mesh.dispose();
+        }
     }
 
     public static class Mtl {
@@ -77,6 +93,10 @@ public class Obj {
         public int illum = 1;
 
         public Mtl() {}
+    }
+
+    public void dispose() {
+        for (int i = 0; i < materials.size; i++) materials.get(i).dispose();
     }
 }
 

@@ -1,5 +1,3 @@
-
-
 uniform mat4 u_proj;
 uniform vec3 u_pos;
 uniform vec3 u_rot;
